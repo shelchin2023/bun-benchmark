@@ -2,9 +2,10 @@
 curl -fsSL https://bun.sh/install | bash
 git clone https://github.com/shelchin2023/bun-benchmark.git
 docker compose up --build -d
+bun run cluster.ts
 
 # Native 模式
-bun run cluster.ts
+wrk -t4 -c200 -d30s http://localhost:5000
 
 # docker 桥接网络模式
 wrk -t4 -c200 -d30s http://localhost:15000
