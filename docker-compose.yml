@@ -1,9 +1,14 @@
 services:
-  http-app:
+  http-app-bridge:
     build:
       context: .
       dockerfile: dockerfile
     ports:
-      - "5000:5000"
-    expose:
-      - 5000
+      - "15000:5000"
+  http-app-host:
+    network_mode: "host"
+    build:
+      context: .
+      dockerfile: dockerfile
+    environment:
+      - PORT=16000
