@@ -1,8 +1,8 @@
-import { verification_code } from '../db/schema';
-import { count } from "drizzle-orm";
-import { db } from "../db/db";
+import { sqlite } from '../db';
 
 export default async () => {
-    const total: any = await db.select({ value: count(verification_code.id) }).from(verification_code)
-    return total[0].value
+    const sql = `SELECT COUNT(*) AS value FROM verification_code`
+    const query = sqlite.query(sql)
+    const result = query.all();
+    return result[0].value
 }

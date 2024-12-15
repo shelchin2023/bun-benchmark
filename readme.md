@@ -2,6 +2,7 @@
 git clone https://github.com/shelchin2023/bun-benchmark.git
 docker compose up --build -d
 curl -fsSL https://bun.sh/install | bash
+bun install
 bun run cluster.ts
 
 # Native 模式

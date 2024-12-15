@@ -1,10 +1,10 @@
 import { serve } from "bun";
-import { db } from "./db/db";
+import { db } from "./db";
 import { migrate } from 'drizzle-orm/bun-sqlite/migrator';
 import { nanoid } from 'nanoid/non-secure'
-import request_email_code from "./handlers/request_email_code";
+import insert from "./handlers/insert";
 import count from "./handlers/count";
-migrate(db, { migrationsFolder: './db/migrations' });
+migrate(db, { migrationsFolder: './migrations' });
 
 const id = Math.random().toString(36).slice(2);
 
@@ -20,9 +20,8 @@ serve({
         const parsedUrl = new URL(request.url);
         const path = parsedUrl.pathname;
 
-        if (path == "/request_email_code") {
-            const id = nanoid()
-            await request_email_code(id, id, id)
+        if (path == "/insert") {
+            await insert("hi@openai.com")
             return new Response("request_email_code ok from Bun #" + id + "!\n");
         }
 
