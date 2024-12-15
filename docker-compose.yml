@@ -8,3 +8,5 @@ services:
       - "6890:6890"
     expose:
       - 6890
+    deploy:
+      replicas: 2 
