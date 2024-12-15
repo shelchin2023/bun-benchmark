@@ -1,7 +1,9 @@
+const port = 6891
 Bun.serve({
-    port:6890,
+    port: port,
     fetch(req) {
-      return new Response("Bun!");
+        // console.log(req)
+        return new Response("Bun!");
     },
-  });
-console.log("http://localhost:6890")
+});
+console.log(`http://localhost:${port}`)
