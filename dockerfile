@@ -4,5 +4,5 @@ WORKDIR /app
 COPY . .
  
 RUN ls -al -h
-CMD bun run ./index.ts
+CMD bun run ./cluster.ts
 EXPOSE 6890
