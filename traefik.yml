@@ -1,0 +1,28 @@
+version: "3"
+services:
+  # 部署 Traefik
+  traefik:
+    image: traefik:v2.10
+    command:
+      - "--api.insecure=true"                   # 开启 Traefik 的管理面板（仅用于测试环境）
+      - "--providers.docker=true"               # 允许 Traefik 自动从 Docker 中发现服务
+      - "--providers.docker.exposedbydefault=false"  # 仅显式指定的服务才被暴露
+      - "--entrypoints.web.address=:6890"       # 定义入口点，监听端口 6890
+    ports:
+      - "6891:6890"                             # 将 Traefik 的入口点暴露到宿主机
+      - "8080:8080"                             # Traefik 的 Dashboard 管理界面 (可选)
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # 挂载 Docker socket，便于动态发现服务
+
+  http-app:
+    build:
+      context: .
+      dockerfile: dockerfile
+    labels:
+      - "traefik.enable=true"                                 # 显式指定 Traefik 应该关注此服务
+      - "traefik.http.routers.http-app.rule=PathPrefix(`/`)"  # 定义路由规则
+      - "traefik.http.services.http-app.loadbalancer.server.port=6890"  # 指定容器内部的服务端口
+    expose:
+      - 6890
+    deploy:
+      replicas: 2 
