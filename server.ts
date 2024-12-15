@@ -2,7 +2,8 @@ import { serve } from "bun";
 import { db } from "./db/db";
 import { migrate } from 'drizzle-orm/bun-sqlite/migrator';
 import { nanoid } from 'nanoid/non-secure'
-import request_email_code from "./handlers.ts/request_email_code";
+import request_email_code from "./handlers/request_email_code";
+import count from "./handlers/count";
 migrate(db, { migrationsFolder: './db/migrations' });
 
 const id = Math.random().toString(36).slice(2);
@@ -23,6 +24,11 @@ serve({
             const id = nanoid()
             await request_email_code(id, id, id)
             return new Response("request_email_code ok from Bun #" + id + "!\n");
+        }
+
+        if (path == "/count") {
+            const total = await count()
+            return new Response(`${total} ok from Bun #` + id + "!\n");
         }
 
         return new Response("Hello from Bun #" + id + "!\n");
