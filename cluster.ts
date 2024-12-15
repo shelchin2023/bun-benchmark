@@ -1,21 +1,22 @@
 import { spawn } from "bun";
 
 const cpus = navigator.hardwareConcurrency; // Number of CPU cores
+console.log("cpus", cpus)
 const buns = new Array(cpus);
 
 for (let i = 0; i < cpus; i++) {
-  buns[i] = spawn({
-    cmd: ["bun", "./server.ts"],
-    stdout: "inherit",
-    stderr: "inherit",
-    stdin: "inherit",
-  });
+    buns[i] = spawn({
+        cmd: ["bun", "./server.ts"],
+        stdout: "inherit",
+        stderr: "inherit",
+        stdin: "inherit",
+    });
 }
 
 function kill() {
-  for (const bun of buns) {
-    bun.kill();
-  }
+    for (const bun of buns) {
+        bun.kill();
+    }
 }
 
 process.on("SIGINT", kill);
