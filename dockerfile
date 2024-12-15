@@ -5,4 +5,4 @@ COPY . .
  
 RUN ls -al -h
 CMD bun run ./cluster.ts
-EXPOSE 6890
+EXPOSE 5000

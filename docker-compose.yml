@@ -4,6 +4,6 @@ services:
       context: .
       dockerfile: dockerfile
     ports:
-      - "6890:6890"
+      - "5000:5000"
     expose:
-      - 6890
+      - 5000
