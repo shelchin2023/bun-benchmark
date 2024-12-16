@@ -36,6 +36,7 @@ serve({
         }
 
         if (path == "/query") {
+            console.log(id)
             const result = await query()
             return new Response(`query ${result?.id} ${result?.username} ok from Bun #` + id + "!\n");
         }
@@ -47,7 +48,7 @@ serve({
         }
 
 
-        console.log(id)
+      
         return new Response("Hello from Bun #" + id + "!\n");
 
     }
