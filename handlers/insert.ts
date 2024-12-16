@@ -1,8 +1,7 @@
-import { sqlite } from '../db';
+import { sqlite } from "../db";
 
-export default async () => {
-    const sql = `SELECT * AS value FROM verification_code where id =1`
+export default async (email: string,) => {
+    const sql = `INSERT INTO verification_code ( username ) VALUES ('${email}');`
     const query = sqlite.query(sql)
-    const result = query.get();
-    return result.value
+    query.run();
 }

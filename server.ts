@@ -1,14 +1,16 @@
 import { serve } from "bun";
-import { db } from "./db";
-import { migrate } from 'drizzle-orm/bun-sqlite/migrator';
-import { nanoid } from 'nanoid/non-secure'
+
 import insert from "./handlers/insert";
 import count from "./handlers/count";
 import query from "./handlers/query";
-migrate(db, { migrationsFolder: './migrations' });
+import update from "./handlers/update"
+import { sqlite } from "./db";
+
+sqlite.run('PRAGMA busy_timeout = 5000;');
+sqlite.run('PRAGMA journal_mode=WAL;');
 
 const id = Math.random().toString(36).slice(2);
-
+console.log({ id })
 serve({
     port: process.env.PORT || 5000,
     development: false,
@@ -21,21 +23,31 @@ serve({
         const parsedUrl = new URL(request.url);
         const path = parsedUrl.pathname;
 
+
+
         if (path == "/insert") {
             await insert("hi@openai.com")
-            return new Response("request_email_code ok from Bun #" + id + "!\n");
+            return new Response("insert ok from Bun #" + id + "!\n");
         }
 
         if (path == "/count") {
             const total = await count()
-            return new Response(`${total} ok from Bun #` + id + "!\n");
+            return new Response(`count ${total} ok from Bun #` + id + "!\n");
         }
 
         if (path == "/query") {
             const result = await query()
-            return new Response(`${result.id} ${result.username} ok from Bun #` + id + "!\n");
+            return new Response(`query ${result?.id} ${result?.username} ok from Bun #` + id + "!\n");
         }
 
+
+        if (path == "/update") {
+            await update()
+            return new Response("update ok from Bun #" + id + "!\n");
+        }
+
+
+        console.log(id)
         return new Response("Hello from Bun #" + id + "!\n");
 
     }
