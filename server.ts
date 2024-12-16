@@ -36,7 +36,7 @@ serve({
         }
 
         if (path == "/query") {
-            console.log(id)
+       
             const result = await query()
             return new Response(`query ${result?.id} ${result?.username} ok from Bun #` + id + "!\n");
         }
